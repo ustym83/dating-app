@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dating App</title>
+</head>
+<body>
+    <h1>Список користувачів</h1>
+
+    {% for user in users %}
+        <p>{{ user }}</p>
+    {% endfor %}
+
+    <a href="/register">Реєстрація</a>
+</body>
+</html>
