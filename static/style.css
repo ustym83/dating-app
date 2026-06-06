@@ -1,0 +1,242 @@
+:root {
+    /* Body colors */
+    --body-background-light: #ffffff;
+    --body-text-light: #000000;
+    --body-background-dark: #333333;
+    --body-text-dark: #ffffff;
+
+    /* Switch colors - Light Mode */
+    --switch-track-bg-light: #F2F2F2;
+    --switch-thumb-bg-light: #3F51B5; /* Deep blue */
+    --switch-icon-color-light: white;
+
+    /* Switch colors - Dark Mode */
+    --switch-track-bg-dark: #1A1A1A; /* Dark gray / charcoal */
+    --switch-thumb-bg-dark: #3F51B5; /* Deep blue */
+    --switch-icon-color-dark: white;
+
+    /* Transitions */
+    --transition-speed: 0.3s;
+    --transition-timing-function: ease;
+}
+
+body {
+    background-color: var(--body-background-light);
+    color: var(--body-text-light);
+    font-family: sans-serif;
+    margin: 0;
+    padding: 20px;
+    transition: background-color var(--transition-speed) var(--transition-timing-function),
+                color var(--transition-speed) var(--transition-timing-function);
+}
+
+body.dark-mode {
+    background-color: var(--body-background-dark);
+    color: var(--body-text-dark);
+}
+
+/* Theme Switch Wrapper */
+.theme-switch-wrapper {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+/* Hide default checkbox */
+#theme-checkbox {
+    display: none;
+}
+
+/* Theme Switch (Label - the track) */
+.theme-switch {
+    display: block;
+    width: 60px; /* Capsule width */
+    height: 30px; /* Capsule height */
+    background-color: var(--switch-track-bg-light);
+    border-radius: 50px; /* Fully rounded corners */
+    position: relative;
+    cursor: pointer;
+    transition: background-color var(--transition-speed) var(--transition-timing-function);
+}
+
+/* Dark mode track background */
+#theme-checkbox:checked + .theme-switch {
+    background-color: var(--switch-track-bg-dark);
+}
+
+/* Slider (Thumb - the moving circle) */
+.theme-switch .slider {
+    position: absolute;
+    top: 2px; /* Adjust to center vertically */
+    left: 2px; /* Initial position */
+    width: 26px; /* Thumb size */
+    height: 26px; /* Thumb size */
+    background-color: var(--switch-thumb-bg-light); /* Deep blue */
+    border-radius: 50%; /* Perfect circle */
+    transition: transform var(--transition-speed) var(--transition-timing-function),
+                background-color var(--transition-speed) var(--transition-timing-function);
+}
+
+/* Dark mode thumb position */
+#theme-checkbox:checked + .theme-switch .slider {
+    transform: translateX(30px); /* Move to the right (60px - 26px - 2*2px = 30px) */
+    background-color: var(--switch-thumb-bg-dark); /* Deep blue */
+}
+
+/* Icons inside the thumb */
+.theme-switch .slider .icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px; /* Icon size */
+    height: 16px; /* Icon size */
+    stroke: var(--switch-icon-color-light); /* White icon color */
+    transition: opacity var(--transition-speed) var(--transition-timing-function);
+}
+
+/* Initially show sun icon, hide moon icon */
+.theme-switch .slider .sun-icon {
+    opacity: 1;
+}
+.theme-switch .slider .moon-icon {
+    opacity: 0;
+}
+
+/* When checked (dark mode), hide sun, show moon */
+#theme-checkbox:checked + .theme-switch .slider .sun-icon {
+    opacity: 0;
+}
+#theme-checkbox:checked + .theme-switch .slider .moon-icon {
+    opacity: 1;
+}
+
+/* General styling for other elements (if needed) */
+h1, p, a {
+    transition: color var(--transition-speed) var(--transition-timing-function);
+}
+
+/* Auth Container (Centered) */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* Center vertically on the screen */
+}
+
+.auth-box {
+    background-color: var(--switch-track-bg-light);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 300px; /* Fixed width for consistency */
+    transition: background-color var(--transition-speed) var(--transition-timing-function);
+}
+
+body.dark-mode .auth-box {
+    background-color: var(--switch-track-bg-dark);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.auth-box h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+#auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-box form {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-box input[type="email"],
+.auth-box input[type="password"] {
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+    width: 100%;
+    background-color: var(--body-background-light);
+    color: var(--body-text-light);
+    transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
+}
+
+body.dark-mode .auth-box input[type="email"],
+body.dark-mode .auth-box input[type="password"] {
+    background-color: #444;
+    color: var(--body-text-dark);
+    border-color: #555;
+}
+
+/* Buttons */
+.big-btn {
+    padding: 15px 20px;
+    background-color: var(--switch-thumb-bg-light);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.1s;
+    width: 100%;
+}
+
+.big-btn:hover {
+    filter: brightness(1.2);
+}
+
+.big-btn:active {
+    transform: scale(0.98);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--switch-thumb-bg-light);
+    border: 2px solid var(--switch-thumb-bg-light);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(63, 81, 181, 0.1);
+}
+
+body.dark-mode .btn-secondary {
+    color: #fff;
+    border-color: #fff;
+}
+
+body.dark-mode .btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.back-btn {
+    margin-top: 15px;
+    padding: 10px;
+    background: transparent;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+body.dark-mode .back-btn {
+    color: #aaa;
+}
+
+.back-btn:hover {
+    color: #333;
+}
+
+body.dark-mode .back-btn:hover {
+    color: #fff;
+}
