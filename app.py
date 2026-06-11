@@ -20,21 +20,33 @@ def login():
         session["user"] = email
         return redirect("/")
     else:
-        return "Неправильна пошта або пароль. <a href='/'>Повернутися</a>", 400
+        # Повертаємо шаблон з повідомленням про помилку та вказуємо, яку форму показати
+        return render_template("index.html", 
+                               users=list(users.keys()), 
+                               error="Неправильна пошта або пароль.",
+                               form_to_show='login')
 
 @app.route("/register", methods=["POST"])
 def register():
     email = request.form.get("email")
     password = request.form.get("password")
     
-    if email and password:
-        if email not in users:
-            users[email] = password
-            session["user"] = email
-            return redirect("/")
-        else:
-            return "Користувач з такою поштою вже існує. <a href='/'>Повернутися</a>", 400
-    return redirect("/")
+    if not email or not password:
+        return render_template("index.html", 
+                               users=list(users.keys()), 
+                               error="Пошта та пароль не можуть бути порожніми.",
+                               form_to_show='register')
+
+    if email not in users:
+        users[email] = password
+        session["user"] = email
+        return redirect("/")
+    else:
+        # Повертаємо шаблон з повідомленням про помилку та вказуємо, яку форму показати
+        return render_template("index.html", 
+                               users=list(users.keys()), 
+                               error="Користувач з такою поштою вже існує.",
+                               form_to_show='register')
 
 @app.route("/logout")
 def logout():

@@ -49,6 +49,9 @@
                     <h2>Вхід</h2>
                     <form action="/login" method="post">
                         <input type="email" name="email" placeholder="Пошта" required>
+                        {% if error and form_to_show == 'login' %}
+                            <p class="error-message">{{ error }}</p>
+                        {% endif %}
                         <input type="password" name="password" placeholder="Пароль" required>
                         <button type="submit" class="big-btn">Увійти</button>
                         <button type="button" class="back-btn" onclick="showButtons()">Назад</button>
@@ -60,6 +63,9 @@
                     <h2>Реєстрація</h2>
                     <form action="/register" method="post">
                         <input type="email" name="email" placeholder="Пошта" required>
+                        {% if error and form_to_show == 'register' %}
+                            <p class="error-message">{{ error }}</p>
+                        {% endif %}
                         <input type="password" name="password" placeholder="Пароль" required>
                         <button type="submit" class="big-btn">Зареєструватися</button>
                         <button type="button" class="back-btn" onclick="showButtons()">Назад</button>
@@ -86,6 +92,16 @@
             document.getElementById('register-form').style.display = 'none';
             document.getElementById('auth-buttons').style.display = 'flex';
         }
+
+        // On page load, check if we need to show a specific form due to an error
+        document.addEventListener('DOMContentLoaded', function() {
+            const formToShow = "{{ form_to_show if form_to_show else '' }}";
+            if (formToShow === 'login') {
+                showLogin();
+            } else if (formToShow === 'register') {
+                showRegister();
+            }
+        });
     </script>
 </body>
 </html>

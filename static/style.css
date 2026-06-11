@@ -240,3 +240,13 @@ body.dark-mode .back-btn {
 body.dark-mode .back-btn:hover {
     color: #fff;
 }
+
+/* Error Messages */
+.error-message {
+    color: #e74c3c; /* Red color for errors */
+    font-size: 13px;
+    text-align: left;
+    margin-top: -10px; /* Pull it closer to the input above */
+    margin-bottom: 12px;
+    padding-left: 5px;
+}
