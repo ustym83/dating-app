@@ -35,12 +35,55 @@ body.dark-mode {
     color: var(--body-text-dark);
 }
 
-/* Theme Switch Wrapper */
-.theme-switch-wrapper {
+/* Top Controls (Language and Theme) */
+.top-controls {
     position: absolute;
     top: 20px;
     right: 20px;
-    z-index: 1000; /* Ensure it's above other content */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 1000;
+}
+
+/* Language Switcher */
+.lang-switcher {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.lang-switcher a {
+    color: #888;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.lang-switcher a:hover {
+    color: var(--switch-thumb-bg-light);
+}
+
+.lang-switcher a.active {
+    color: var(--body-text-light);
+}
+
+body.dark-mode .lang-switcher a.active {
+    color: var(--body-text-dark);
+}
+
+.lang-switcher .separator {
+    margin: 0 8px;
+    color: #ccc;
+}
+
+body.dark-mode .lang-switcher .separator {
+    color: #555;
+}
+
+/* Theme Switch Wrapper */
+.theme-switch-wrapper {
+    /* Removed absolute positioning since it's now in .top-controls */
 }
 
 /* Hide default checkbox */

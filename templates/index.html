@@ -1,37 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ g.locale }}">
 <head>
-    <title>Dating App</title>
+    <title>{{ _('Dating App') }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body id="theme-body">
-    <div class="theme-switch-wrapper">
-        <input type="checkbox" id="theme-checkbox" />
-        <label for="theme-checkbox" class="theme-switch">
-            <span class="slider">
-                <!-- Sun Icon -->
-                <svg class="icon sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                </svg>
-                <!-- Moon Icon -->
-                <svg class="icon moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                </svg>
-            </span>
-        </label>
+    <div class="top-controls">
+        <div class="lang-switcher">
+            <a href="{{ url_for('set_language', language='en') }}" {% if g.locale == 'en' %}class="active"{% endif %}>EN</a>
+            <span class="separator">|</span>
+            <a href="{{ url_for('set_language', language='uk') }}" {% if g.locale == 'uk' %}class="active"{% endif %}>UA</a>
+        </div>
+        <div class="theme-switch-wrapper">
+            <input type="checkbox" id="theme-checkbox" />
+            <label for="theme-checkbox" class="theme-switch">
+                <span class="slider">
+                    <!-- Icons remain the same, they are visual not text -->
+                    <svg class="icon sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="icon moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </span>
+            </label>
+        </div>
     </div>
 
     {% if session.user %}
-        <h1>Список користувачів</h1>
-        <p>Привіт, {{ session.user }}! <a href="/logout">Вийти</a></p>
+        <h1>{{ _('Список користувачів') }}</h1>
+        <p>{{ _('Привіт') }}, {{ session.user }}! <a href="/logout">{{ _('Вийти') }}</a></p>
         {% for user in users %}
             <p>{{ user }}</p>
         {% endfor %}
@@ -40,35 +34,35 @@
             <div class="auth-box">
                 <!-- Initial View: Buttons -->
                 <div id="auth-buttons">
-                    <button class="big-btn" onclick="showLogin()">Вхід</button>
-                    <button class="big-btn btn-secondary" onclick="showRegister()">Реєстрація</button>
+                    <button class="big-btn" onclick="showLogin()">{{ _('Вхід') }}</button>
+                    <button class="big-btn btn-secondary" onclick="showRegister()">{{ _('Реєстрація') }}</button>
                 </div>
 
                 <!-- Login Form -->
                 <div id="login-form" style="display: none;">
-                    <h2>Вхід</h2>
+                    <h2>{{ _('Вхід') }}</h2>
                     <form action="/login" method="post">
-                        <input type="email" name="email" placeholder="Пошта" required>
+                        <input type="email" name="email" placeholder="{{ _('Пошта') }}" required>
                         {% if error and form_to_show == 'login' %}
                             <p class="error-message">{{ error }}</p>
                         {% endif %}
-                        <input type="password" name="password" placeholder="Пароль" required>
-                        <button type="submit" class="big-btn">Увійти</button>
-                        <button type="button" class="back-btn" onclick="showButtons()">Назад</button>
+                        <input type="password" name="password" placeholder="{{ _('Пароль') }}" required>
+                        <button type="submit" class="big-btn">{{ _('Увійти') }}</button>
+                        <button type="button" class="back-btn" onclick="showButtons()">{{ _('Назад') }}</button>
                     </form>
                 </div>
 
                 <!-- Register Form -->
                 <div id="register-form" style="display: none;">
-                    <h2>Реєстрація</h2>
+                    <h2>{{ _('Реєстрація') }}</h2>
                     <form action="/register" method="post">
-                        <input type="email" name="email" placeholder="Пошта" required>
+                        <input type="email" name="email" placeholder="{{ _('Пошта') }}" required>
                         {% if error and form_to_show == 'register' %}
                             <p class="error-message">{{ error }}</p>
                         {% endif %}
-                        <input type="password" name="password" placeholder="Пароль" required>
-                        <button type="submit" class="big-btn">Зареєструватися</button>
-                        <button type="button" class="back-btn" onclick="showButtons()">Назад</button>
+                        <input type="password" name="password" placeholder="{{ _('Пароль') }}" required>
+                        <button type="submit" class="big-btn">{{ _('Зареєструватися') }}</button>
+                        <button type="button" class="back-btn" onclick="showButtons()">{{ _('Назад') }}</button>
                     </form>
                 </div>
             </div>
