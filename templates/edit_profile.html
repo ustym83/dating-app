@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="{{ g.locale }}">
+<head>
+    <title>{{ _('Редагувати профіль') }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body id="theme-body">
+    <div class="top-controls">
+        <div class="lang-switcher">
+            <a href="{{ url_for('set_language', language='en') }}" {% if g.locale == 'en' %}class="active"{% endif %}>EN</a>
+            <span class="separator">|</span>
+            <a href="{{ url_for('set_language', language='uk') }}" {% if g.locale == 'uk' %}class="active"{% endif %}>UA</a>
+        </div>
+        <div class="theme-switch-wrapper">
+            <input type="checkbox" id="theme-checkbox" />
+            <label for="theme-checkbox" class="theme-switch">
+                <span class="slider">
+                    <svg class="icon sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="icon moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </span>
+            </label>
+        </div>
+    </div>
+
+    <div class="profile-form-container">
+        <form class="profile-form" method="post" enctype="multipart/form-data">
+            <h2>{{ _('Редагувати профіль') }}</h2>
+
+            <label for="description">{{ _('Опис') }}:</label>
+            <textarea id="description" name="description" rows="4">{{ user.description or '' }}</textarea>
+
+            <label for="photo">{{ _('Фото профілю') }}:</label>
+            <input type="file" id="photo" name="photo" accept="image/*">
+
+            <label>{{ _('Захоплення') }}:</label>
+            <div class="hobbies-container">
+                {% for hobby in hobbies_list %}
+                <div class="hobby-checkbox">
+                    <input type="checkbox" id="hobby_{{ hobby }}" name="hobbies" value="{{ hobby }}" {% if hobby in user.hobbies %}checked{% endif %}>
+                    <label for="hobby_{{ hobby }}">{{ _(hobby) }}</label>
+                </div>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="big-btn">{{ _('Зберегти') }}</button>
+        </form>
+    </div>
+
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
+</body>
+</html>
