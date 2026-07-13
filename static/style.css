@@ -1,9 +1,9 @@
 :root {
     /* Body colors */
-    --body-background-light: #ffffff;
+    --body-background-light: #f0f2f5;
     --body-text-light: #000000;
-    --body-background-dark: #333333;
-    --body-text-dark: #ffffff;
+    --body-background-dark: #18191a;
+    --body-text-dark: #e4e6eb;
 
     /* Switch colors - Light Mode */
     --switch-track-bg-light: #F2F2F2;
@@ -11,13 +11,13 @@
     --switch-icon-color-light: white;
 
     /* Switch colors - Dark Mode */
-    --switch-track-bg-dark: #1A1A1A; /* Dark gray / charcoal */
+    --switch-track-bg-dark: #3a3b3c;
     --switch-thumb-bg-dark: #3F51B5; /* Deep blue */
     --switch-icon-color-dark: white;
 
     /* Card & Container Colors */
-    --card-bg-light: #f9f9f9;
-    --card-bg-dark: #222222;
+    --card-bg-light: #ffffff;
+    --card-bg-dark: #242526;
 
     /* Transitions */
     --transition-speed: 0.3s;
@@ -29,9 +29,10 @@ body {
     color: var(--body-text-light);
     font-family: sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0; /* Removed padding */
     transition: background-color var(--transition-speed) var(--transition-timing-function),
                 color var(--transition-speed) var(--transition-timing-function);
+    overflow: hidden; /* Prevent scrolling */
 }
 
 body.dark-mode {
@@ -169,11 +170,11 @@ h1, p, a {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh; /* Center vertically on the screen */
+    height: 100vh;
 }
 
 .auth-box {
-    background-color: var(--switch-track-bg-light);
+    background-color: var(--card-bg-light);
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -183,7 +184,7 @@ h1, p, a {
 }
 
 body.dark-mode .auth-box {
-    background-color: var(--switch-track-bg-dark);
+    background-color: var(--card-bg-dark);
     box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
@@ -305,6 +306,9 @@ body.dark-mode .back-btn:hover {
 .main-container {
     max-width: 800px;
     margin: 60px auto 0; /* Margin top for top controls */
+    padding: 20px;
+    overflow-y: auto; /* Allow scrolling for main content */
+    height: calc(100vh - 60px);
 }
 
 .welcome-header {
@@ -489,4 +493,136 @@ body.dark-mode .profile-form input[type="file"] {
     margin: 0;
     font-weight: normal;
     cursor: pointer;
+}
+
+/* Match/Swipe Page Styles */
+.match-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    padding: 0;
+    margin: 0;
+}
+
+.match-card {
+    width: 380px;
+    height: 570px;
+    background-color: var(--card-bg-dark);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Aligns children (info) to the bottom */
+}
+
+.match-card img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.match-card-info {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+    color: white;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 20%, rgba(0,0,0,0.6) 60%, transparent 100%);
+}
+
+.match-card-info h3 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.match-card-info p {
+    font-size: 16px;
+    color: #f1f1f1;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.match-card .hobbies-tags {
+    padding-bottom: 80px; /* Make space for action buttons */
+}
+
+.match-card .hobby-tag {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.match-actions {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: 20px;
+}
+
+.action-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.like-btn {
+    background-color: #28a745; /* Green */
+}
+.like-btn:hover {
+    background-color: #218838;
+    transform: scale(1.1);
+}
+
+.swap-btn {
+    background-color: #dc3545; /* Red */
+}
+.swap-btn:hover {
+    background-color: #c82333;
+    transform: scale(1.1);
+}
+
+/* Add icons for buttons */
+.action-btn::before {
+    content: '';
+    font-size: 24px;
+    color: white;
+}
+.like-btn::before {
+    content: '❤️';
+}
+.swap-btn::before {
+    content: '❌';
+}
+
+.no-matches {
+    text-align: center;
+    color: var(--body-text-light);
+}
+body.dark-mode .no-matches {
+    color: var(--body-text-dark);
+}
+
+.no-matches h2 {
+    margin-bottom: 25px;
+}
+.no-matches .big-btn {
+    max-width: 300px;
 }

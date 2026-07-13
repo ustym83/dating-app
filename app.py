@@ -1,4 +1,5 @@
 import os
+import random
 from flask import Flask, render_template, request, redirect, session, g, url_for
 from werkzeug.utils import secure_filename
 
@@ -37,6 +38,9 @@ TRANSLATIONS = {
     'Кіно': {'uk': 'Кіно', 'en': 'Movies'},
     'Ігри': {'uk': 'Ігри', 'en': 'Gaming'},
     'Книги': {'uk': 'Книги', 'en': 'Books'},
+    'Лайк': {'uk': 'Лайк', 'en': 'Like'},
+    'Свап': {'uk': 'Свап', 'en': 'Swap'},
+    'Кандидати закінчились': {'uk': 'Кандидати закінчились', 'en': 'No more matches'},
 }
 
 def get_locale():
@@ -55,15 +59,15 @@ app.jinja_env.globals.update(_=_)
 @app.before_request
 def before_request():
     g.locale = get_locale()
-    # Якщо користувач є в сесії, але його немає в базі даних (після перезапуску)
     if 'user' in session and session['user'] not in users:
-        session.pop('user') # Очищуємо недійсну сесію
-# --- End Custom Translation System ---
-
+        session.pop('user')
 
 # --- Data Structure ---
-# users = { 'email': {'password': '...', 'description': '...', 'photo': '...', 'hobbies': [...] } }
-users = {}
+users = {
+    'user1@example.com': {'password': 'password', 'description': 'Люблю подорожувати та читати книги.', 'photo': 'user1.jpg', 'hobbies': ['Подорожі', 'Книги']},
+    'user2@example.com': {'password': 'password', 'description': 'Фанатка кіно та музики.', 'photo': 'user2.jpg', 'hobbies': ['Кіно', 'Музика']},
+    'user3@example.com': {'password': 'password', 'description': 'Займаюся спортом і граю в ігри.', 'photo': 'user3.jpg', 'hobbies': ['Спорт', 'Ігри', 'Кіно']},
+}
 HOBBIES = ['Спорт', 'Музика', 'Подорожі', 'Кіно', 'Ігри', 'Книги']
 
 
@@ -72,7 +76,6 @@ def home():
     if 'user' not in session:
         return render_template("index.html")
     
-    # Pass user objects to the template, excluding the current user
     other_users = {email: profile for email, profile in users.items() if email != session.get('user')}
     return render_template("home.html", users=other_users)
 
@@ -101,14 +104,9 @@ def register():
         return render_template("index.html", error=_('Пошта та пароль не можуть бути порожніми.'), form_to_show='register')
 
     if email not in users:
-        users[email] = {
-            'password': password,
-            'description': '',
-            'photo': None,
-            'hobbies': []
-        }
+        users[email] = {'password': password, 'description': '', 'photo': None, 'hobbies': []}
         session["user"] = email
-        return redirect(url_for('edit_profile')) # Redirect to profile creation
+        return redirect(url_for('edit_profile'))
     else:
         return render_template("index.html", error=_('Користувач з такою поштою вже існує.'), form_to_show='register')
 
@@ -131,18 +129,67 @@ def edit_profile():
                 file.save(file_path)
                 users[email]['photo'] = filename
         
-        return redirect(url_for('home'))
+        return redirect(url_for('find_matches'))
 
-    # Переконуємось, що користувач все ще існує в 'users'
     if email not in users:
         return redirect(url_for('logout'))
 
     return render_template('edit_profile.html', user=users[email], hobbies_list=HOBBIES)
 
+@app.route('/find_matches')
+def find_matches():
+    if 'user' not in session:
+        return redirect('/')
+
+    current_user_email = session['user']
+    
+    # Generate match queue if it doesn't exist or is empty
+    if 'match_queue' not in session or not session['match_queue']:
+        current_user_hobbies = set(users[current_user_email].get('hobbies', []))
+        
+        if not current_user_hobbies:
+            return render_template('find_matches.html', candidate=None)
+
+        potential_matches = []
+        for email, profile in users.items():
+            if email == current_user_email:
+                continue
+            
+            user_hobbies = set(profile.get('hobbies', []))
+            if current_user_hobbies.intersection(user_hobbies):
+                potential_matches.append(email)
+        
+        random.shuffle(potential_matches)
+        session['match_queue'] = potential_matches
+
+    # Get the next candidate
+    if session['match_queue']:
+        next_candidate_email = session['match_queue'].pop(0)
+        session.modified = True # Ensure the session is saved after pop
+        candidate_profile = users.get(next_candidate_email)
+        return render_template('find_matches.html', candidate=candidate_profile, email=next_candidate_email)
+    else:
+        return render_template('find_matches.html', candidate=None)
+
+@app.route('/like/<email>')
+def like(email):
+    if 'user' not in session:
+        return redirect('/')
+    # Here you could add logic to save the "like" to a database
+    print(f"User {session['user']} liked {email}")
+    return redirect(url_for('find_matches'))
+
+@app.route('/swap/<email>')
+def swap(email):
+    if 'user' not in session:
+        return redirect('/')
+    # This action just moves to the next person
+    print(f"User {session['user']} swapped on {email}")
+    return redirect(url_for('find_matches'))
+
 @app.route("/logout")
 def logout():
-    session.pop("user", None)
-    session.pop("language", None) # Також очищуємо мову при виході
+    session.clear()
     return redirect("/")
 
 if __name__ == "__main__":
