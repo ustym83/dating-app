@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="{{ g.locale }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ _('Dating App') }}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+    {% if session.user %}
+    <header class="main-header">
+        <a href="{{ url_for('home') }}" class="logo">❤️ DatingApp</a>
+        <nav class="main-nav">
+            <a href="{{ url_for('find_matches') }}" class="nav-item" title="{{ _('Пошук') }}">
+                <span class="nav-icon">🔍</span>
+            </a>
+            <a href="{{ url_for('notifications') }}" class="nav-item" title="{{ _('Сповіщення') }}">
+                <span class="nav-icon">🔔</span>
+                {% if g.user_data and g.user_data.likes_received %}
+                    <span class="notification-badge">{{ g.user_data.likes_received|length }}</span>
+                {% endif %}
+            </a>
+            <a href="{{ url_for('my_matches') }}" class="nav-item" title="{{ _('Мої метчі') }}">
+                <span class="nav-icon">💬</span>
+                 {% if g.user_data and g.user_data.matches %}
+                    <span class="notification-badge match-badge">{{ g.user_data.matches|length }}</span>
+                {% endif %}
+            </a>
+            <a href="{{ url_for('home') }}" class="nav-item" title="{{ _('Профіль') }}">
+                <span class="nav-icon">👤</span>
+            </a>
+        </nav>
+    </header>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
+</body>
+</html>

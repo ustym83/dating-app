@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Мої метчі') }}{% endblock %}
+
+{% block body_class %}content-page{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h1>{{ _('Мої метчі') }}</h1>
+    <p>{{ _('Це ваші взаємні пари. Почніть спілкування!') }}</p>
+
+    <div class="user-list">
+        {% if matches %}
+            {% for email, profile in matches.items() %}
+                <div class="user-list-item">
+                    <img src="{{ url_for('static', filename='uploads/' + profile.photo) if profile.photo else url_for('static', filename='default-avatar.png') }}" class="user-avatar">
+                    <div class="user-list-info">
+                        <h3>{{ email.split('@')[0] }}</h3>
+                        <p>{{ profile.description[:80] ~ '...' if profile.description|length > 80 else profile.description }}</p>
+                    </div>
+                    <div class="user-list-actions">
+                        <a href="{{ url_for('chat', chat_with_email=email) }}" class="big-btn">{{ _('Написати') }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="empty-list-msg">{{ _('У вас ще немає пар. Продовжуйте пошук!') }}</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

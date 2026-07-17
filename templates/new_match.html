@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('У вас новий метч!') }}{% endblock %}
+
+{% block body_class %}match-page{% endblock %}
+
+{% block content %}
+<div class="new-match-container">
+    <div class="new-match-content">
+        <h1>{{ _('У вас новий метч!') }}</h1>
+
+        <div class="match-avatars">
+            <img src="{{ url_for('static', filename='uploads/' + g.user_data.photo) if g.user_data.photo else url_for('static', filename='default-avatar.png') }}" class="match-avatar">
+            <span class="heart-icon">❤️</span>
+            <img src="{{ url_for('static', filename='uploads/' + match.photo) if match.photo else url_for('static', filename='default-avatar.png') }}" class="match-avatar">
+        </div>
+
+        <p>{{ _('Ви і') }} <strong>{{ match_email.split('@')[0] }}</strong> {{ _('сподобались один одному!') }}</p>
+
+        <div class="new-match-actions">
+            <a href="{{ url_for('chat', chat_with_email=match_email) }}" class="big-btn">{{ _('Написати') }}</a>
+            <a href="{{ url_for('find_matches') }}" class="big-btn secondary">{{ _('Продовжити пошук') }}</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

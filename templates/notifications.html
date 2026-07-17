@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Сповіщення') }}{% endblock %}
+
+{% block body_class %}content-page{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h1>{{ _('Сповіщення') }}</h1>
+    <p>{{ _('Ці люди лайкнули вас. Дайте відповідь, щоб утворити пару!') }}</p>
+
+    <div class="user-list">
+        {% if likers %}
+            {% for email, profile in likers.items() %}
+                <div class="user-list-item">
+                    <img src="{{ url_for('static', filename='uploads/' + profile.photo) if profile.photo else url_for('static', filename='default-avatar.png') }}" class="user-avatar">
+                    <div class="user-list-info">
+                        <h3>{{ email.split('@')[0] }}</h3>
+                        <p>{{ profile.description[:80] ~ '...' if profile.description|length > 80 else profile.description }}</p>
+                    </div>
+                    <div class="user-list-actions">
+                        <a href="{{ url_for('like', liked_email=email) }}" class="action-btn like-btn">❤️</a>
+                        <a href="{{ url_for('swap', swapped_email=email) }}" class="action-btn swap-btn">❌</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="empty-list-msg">{{ _('У вас поки немає нових лайків.') }}</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

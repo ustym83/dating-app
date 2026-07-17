@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Чат з') }} {{ partner_email.split('@')[0] }}{% endblock %}
+
+{% block body_class %}content-page{% endblock %}
+
+{% block content %}
+<div class="page-container chat-container">
+    <div class="chat-header">
+        <a href="{{ url_for('my_matches') }}" class="back-to-matches">←</a>
+        <img src="{{ url_for('static', filename='uploads/' + partner.photo) if partner.photo else url_for('static', filename='default-avatar.png') }}" class="chat-avatar">
+        <h2>{{ partner_email.split('@')[0] }}</h2>
+    </div>
+
+    <div class="chat-messages">
+        <!-- Messages will be loaded here -->
+        <div class="message received">
+            <p>{{ _('Привіт! Як справи?') }}</p>
+            <span class="timestamp">10:00</span>
+        </div>
+        <div class="message sent">
+            <p>{{ _('Привіт! Все добре, а в тебе?') }}</p>
+            <span class="timestamp">10:01</span>
+        </div>
+        <p class="system-notice">{{ _('Це лише демонстрація. Чат не працює.') }}</p>
+    </div>
+
+    <div class="chat-input-area">
+        <input type="text" placeholder="{{ _('Напишіть повідомлення...') }}" disabled>
+        <button disabled>{{ _('Надіслати') }}</button>
+    </div>
+</div>
+{% endblock %}
