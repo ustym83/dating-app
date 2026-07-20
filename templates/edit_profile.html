@@ -5,12 +5,15 @@
 {% block body_class %}content-page{% endblock %}
 
 {% block content %}
-<div class="profile-form-container">
-    <form class="profile-form" method="POST" enctype="multipart/form-data">
-        <h2>{{ _('Редагувати профіль') }}</h2>
+<div class="page-container">
+    <h1>{{ _('Редагувати профіль') }}</h1>
 
+    <form class="profile-form" method="POST" enctype="multipart/form-data">
         <label for="description">{{ _('Опис') }}</label>
         <textarea name="description" id="description" rows="4">{{ user.description or '' }}</textarea>
+
+        <label for="photo">{{ _('Фото профілю') }}</label>
+        <input type="file" name="photo" id="photo" accept="image/*">
 
         <label>{{ _('Захоплення') }}</label>
         <div class="hobbies-container">
@@ -23,15 +26,7 @@
             {% endfor %}
         </div>
 
-        <label for="photo">{{ _('Фото профілю') }}</label>
-        <input type="file" name="photo" id="photo" accept="image/*">
-
-        {% if user.photo %}
-            <p>{{ _('Поточне фото:') }}</p>
-            <img src="{{ url_for('static', filename='uploads/' + user.photo) }}" alt="Current photo" class="current-photo-preview">
-        {% endif %}
-
-        <button type="submit" class="big-btn" style="margin-top: 20px;">{{ _('Зберегти') }}</button>
+        <button type="submit" class="big-btn">{{ _('Зберегти') }}</button>
     </form>
 </div>
 {% endblock %}

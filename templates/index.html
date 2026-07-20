@@ -1,92 +1,74 @@
 <!DOCTYPE html>
 <html lang="{{ g.locale }}">
 <head>
-    <title>{{ _('Dating App') }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ _('Вхід або Реєстрація') }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body id="theme-body">
-    <div class="top-controls">
-        <div class="lang-switcher">
-            <a href="{{ url_for('set_language', language='en') }}" {% if g.locale == 'en' %}class="active"{% endif %}>EN</a>
-            <span class="separator">|</span>
-            <a href="{{ url_for('set_language', language='uk') }}" {% if g.locale == 'uk' %}class="active"{% endif %}>UA</a>
-        </div>
-        <div class="theme-switch-wrapper">
-            <input type="checkbox" id="theme-checkbox" />
-            <label for="theme-checkbox" class="theme-switch">
-                <span class="slider">
-                    <!-- Icons remain the same, they are visual not text -->
-                    <svg class="icon sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                    <svg class="icon moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                </span>
-            </label>
-        </div>
-    </div>
+<body class="auth-page">
 
-    <div class="auth-container">
-        <div class="auth-box">
-            <!-- Initial View: Buttons -->
-            <div id="auth-buttons">
-                <button class="big-btn" onclick="showLogin()">{{ _('Вхід') }}</button>
-                <button class="big-btn btn-secondary" onclick="showRegister()">{{ _('Реєстрація') }}</button>
-            </div>
+    <main>
+        <div class="auth-container">
+            <div class="auth-box">
+                <h2 id="form-title">{{ _('Вхід') }}</h2>
 
-            <!-- Login Form -->
-            <div id="login-form" style="display: none;">
-                <h2>{{ _('Вхід') }}</h2>
-                <form action="/login" method="post">
+                <form action="/login" method="POST" id="login-form">
                     <input type="email" name="email" placeholder="{{ _('Пошта') }}" required>
+                    <input type="password" name="password" placeholder="{{ _('Пароль') }}" required>
                     {% if error and form_to_show == 'login' %}
                         <p class="error-message">{{ error }}</p>
                     {% endif %}
-                    <input type="password" name="password" placeholder="{{ _('Пароль') }}" required>
                     <button type="submit" class="big-btn">{{ _('Увійти') }}</button>
-                    <button type="button" class="back-btn" onclick="showButtons()">{{ _('Назад') }}</button>
                 </form>
-            </div>
 
-            <!-- Register Form -->
-            <div id="register-form" style="display: none;">
-                <h2>{{ _('Реєстрація') }}</h2>
-                <form action="/register" method="post">
+                <form action="/register" method="POST" id="register-form" style="display: none;">
                     <input type="email" name="email" placeholder="{{ _('Пошта') }}" required>
-                    {% if error and form_to_show == 'register' %}
+                    <input type="password" name="password" placeholder="{{ _('Пароль') }}" required>
+                     {% if error and form_to_show == 'register' %}
                         <p class="error-message">{{ error }}</p>
                     {% endif %}
-                    <input type="password" name="password" placeholder="{{ _('Пароль') }}" required>
                     <button type="submit" class="big-btn">{{ _('Зареєструватися') }}</button>
-                    <button type="button" class="back-btn" onclick="showButtons()">{{ _('Назад') }}</button>
                 </form>
+
+                <p style="margin-top: 20px;">
+                    <a href="#" id="switch-to-register">{{ _('Немає акаунту? Зареєструйтесь') }}</a>
+                    <a href="#" id="switch-to-login" style="display: none;">{{ _('Вже є акаунт? Увійдіть') }}</a>
+                </p>
             </div>
         </div>
-    </div>
+    </main>
 
-    <script src="{{ url_for('static', filename='theme.js') }}"></script>
     <script>
-        function showLogin() {
-            document.getElementById('auth-buttons').style.display = 'none';
-            document.getElementById('register-form').style.display = 'none';
-            document.getElementById('login-form').style.display = 'block';
-        }
-        function showRegister() {
-            document.getElementById('auth-buttons').style.display = 'none';
-            document.getElementById('login-form').style.display = 'none';
-            document.getElementById('register-form').style.display = 'block';
-        }
-        function showButtons() {
-            document.getElementById('login-form').style.display = 'none';
-            document.getElementById('register-form').style.display = 'none';
-            document.getElementById('auth-buttons').style.display = 'flex';
-        }
-
-        // On page load, check if we need to show a specific form due to an error
         document.addEventListener('DOMContentLoaded', function() {
-            const formToShow = "{{ form_to_show if form_to_show else '' }}";
-            if (formToShow === 'login') {
-                showLogin();
-            } else if (formToShow === 'register') {
-                showRegister();
-            }
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const switchToRegister = document.getElementById('switch-to-register');
+            const switchToLogin = document.getElementById('switch-to-login');
+            const formTitle = document.getElementById('form-title');
+
+            switchToRegister.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'flex';
+                switchToRegister.style.display = 'none';
+                switchToLogin.style.display = 'inline';
+                formTitle.innerText = '{{ _("Реєстрація") }}';
+            });
+
+            switchToLogin.addEventListener('click', function(e) {
+                e.preventDefault();
+                registerForm.style.display = 'none';
+                loginForm.style.display = 'flex';
+                switchToLogin.style.display = 'none';
+                switchToRegister.style.display = 'inline';
+                formTitle.innerText = '{{ _("Вхід") }}';
+            });
+
+            // If server-side validation fails, show the correct form
+            {% if form_to_show == 'register' %}
+                switchToRegister.click();
+            {% endif %}
         });
     </script>
 </body>
