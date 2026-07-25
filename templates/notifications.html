@@ -19,8 +19,8 @@
                         <p>{{ profile.description[:80] ~ '...' if profile.description|length > 80 else profile.description }}</p>
                     </div>
                     <div class="user-list-actions">
-                        <a href="{{ url_for('like', liked_email=email) }}" class="action-btn like-btn">❤️</a>
-                        <a href="{{ url_for('swap', swapped_email=email) }}" class="action-btn swap-btn">❌</a>
+                        <a href="{{ url_for('like_user', liked_email=email) }}" class="action-btn like-btn">❤️</a>
+                        <a href="{{ url_for('swap_user', swapped_email=email) }}" class="action-btn swap-btn">❌</a>
                     </div>
                 </div>
             {% endfor %}
