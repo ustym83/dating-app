@@ -13,6 +13,11 @@ users = {
     'user1@example.com': {'password': 'password', 'description': 'Люблю подорожувати та читати книги.', 'photo': 'user1.jpg', 'hobbies': ['Подорожі', 'Книги'], 'likes_from': set(), 'matches': set()},
     'user2@example.com': {'password': 'password', 'description': 'Фанатка кіно та музики.', 'photo': 'user2.jpg', 'hobbies': ['Кіно', 'Музика'], 'likes_from': set(), 'matches': set()},
     'user3@example.com': {'password': 'password', 'description': 'Займаюся спортом і граю в ігри.', 'photo': 'user3.jpg', 'hobbies': ['Спорт', 'Ігри', 'Кіно'], 'likes_from': set(), 'matches': set()},
+    'anna@example.com': {'password': 'password', 'description': 'Програмістка, яка любить гори.', 'photo': 'user4.jpg', 'hobbies': ['Подорожі', 'Ігри'], 'likes_from': set(), 'matches': set()},
+    'bob@example.com': {'password': 'password', 'description': 'Шукаю компанію для перегляду фільмів.', 'photo': 'user5.jpg', 'hobbies': ['Кіно', 'Книги'], 'likes_from': set(), 'matches': set()},
+    'charlie@example.com': {'password': 'password', 'description': 'Ранкові пробіжки та вечірні серіали.', 'photo': 'user6.jpg', 'hobbies': ['Спорт', 'Кіно'], 'likes_from': set(), 'matches': set()},
+    'diana@example.com': {'password': 'password', 'description': 'Музика - моє все. Граю на гітарі.', 'photo': 'user7.jpg', 'hobbies': ['Музика'], 'likes_from': set(), 'matches': set()},
+    'eva@example.com': {'password': 'password', 'description': 'Колекціоную вінілові платівки та рідкісні книги.', 'photo': 'user8.jpg', 'hobbies': ['Музика', 'Книги'], 'likes_from': set(), 'matches': set()},
 }
 HOBBIES = ['Спорт', 'Музика', 'Подорожі', 'Кіно', 'Ігри', 'Книги']
 
